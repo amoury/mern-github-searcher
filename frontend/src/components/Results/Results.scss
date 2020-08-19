@@ -1,0 +1,9 @@
+.Results {
+  border: 1px solid black;
+  width: 80%; 
+  transition: all 0.5s ease-in;
+
+  &--fullheight {
+    flex: 2;
+  }
+}

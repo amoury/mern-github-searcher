@@ -3,7 +3,6 @@
 
   &--inline {
     display: flex;
-    align-items: center;
   }
 
   &__input-field {
@@ -12,6 +11,7 @@
     align-items: center;
     padding: 10px;
     border-radius: 4px;
+    margin: 0 10px;
   }
 
   &__input-icon > img {
@@ -31,10 +31,19 @@
   &__input {
     border: 0;
     margin: 0 20px;
-    line-height: 2.2em;
     font-size: 1.1em;
     flex: 2;
     min-width: 300px;
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  &__select {
+    border: 0;
+    line-height: 1.5em;
+    font-size: 1.1em;
 
     &:focus {
       outline: none;

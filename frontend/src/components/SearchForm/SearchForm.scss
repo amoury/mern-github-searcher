@@ -3,6 +3,12 @@
 
   &--inline {
     display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+
+    @media (min-width: 768px) {
+      flex-direction: row;
+    }
   }
 
   &__input-field {
@@ -33,10 +39,14 @@
     margin: 0 20px;
     font-size: 1.1em;
     flex: 2;
-    min-width: 300px;
+    min-width: 200px;
 
     &:focus {
       outline: none;
+    }
+
+    @media (min-width: 768px) {
+      min-width: 300px;
     }
   }
 
@@ -44,6 +54,7 @@
     border: 0;
     line-height: 1.5em;
     font-size: 1.1em;
+    width: 100%;
 
     &:focus {
       outline: none;

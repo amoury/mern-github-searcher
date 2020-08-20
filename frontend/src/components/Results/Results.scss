@@ -1,9 +1,17 @@
 .Results {
-  border: 1px solid black;
-  width: 80%; 
+  opacity: 0;
+  width: 80%;
   transition: all 0.5s ease-in;
 
+  &--halfheight {
+    display: flex;
+    justify-content: center;
+    height: 50%;
+    opacity: 1;
+  }
+
   &--fullheight {
+    opacity: 1;
     flex: 2;
   }
 }

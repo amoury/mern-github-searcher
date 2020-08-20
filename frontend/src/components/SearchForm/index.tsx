@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback, ChangeEvent } from 'react';
 import { connect } from 'react-redux';
 import _debounce from 'lodash/debounce';
 
-import { fetchSearchResults, clearSearch } from 'actions/search.actions';
+import { fetchSearchResults, clearSearch, clearCurrentState } from 'actions/search.actions';
 import searchIcon from 'assets/search-icon.svg';
 import clearIcon from 'assets/clear-icon.svg';
 import './SearchForm.scss';
@@ -10,6 +10,7 @@ import './SearchForm.scss';
 interface SearchFormProps {
   fetchSearchResults: Function;
   clearSearch: Function;
+  clearCurrentState: Function;
 }
 
 interface SearchFormState {
@@ -26,7 +27,10 @@ const SearchForm = (props: SearchFormProps): JSX.Element => {
   );
 
   useEffect(() => {
-    if (searchTerm.query.length < 3) return; // When the text in the input is less than 3, clear the store results.
+    if (searchTerm.query.length < 3) {
+      props.clearCurrentState();
+      return;
+    }
     githubSearch();
     return githubSearch.cancel;
   }, [searchTerm.query, searchTerm.entity, githubSearch]);
@@ -74,4 +78,4 @@ const SearchForm = (props: SearchFormProps): JSX.Element => {
   );
 };
 
-export default connect(null, { fetchSearchResults, clearSearch })(SearchForm);
+export default connect(null, { fetchSearchResults, clearSearch, clearCurrentState })(SearchForm);

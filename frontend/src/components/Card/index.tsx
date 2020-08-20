@@ -2,7 +2,7 @@ import React from 'react';
 import './Card.scss';
 
 interface CardProps {
-  user: object;
+  data: object;
 }
 
 const Card = (props: CardProps): JSX.Element => {

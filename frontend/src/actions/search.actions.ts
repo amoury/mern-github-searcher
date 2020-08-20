@@ -74,10 +74,16 @@ export const getDataFromCache = (state: StoreState, searchQuery: SearchQuery) =>
   return _get(cache, [entity, query], []);
 };
 
+export const clearCurrentState = () => {
+  return (dispatch: Dispatch) => {
+    dispatch(resetUserRecords());
+    dispatch(resetRepoRecords());
+  };
+};
+
 export const clearSearch = () => {
   return (dispatch: Dispatch) => {
     dispatch(resetSearchTerm());
-    dispatch(resetUserRecords());
-    dispatch(resetRepoRecords());
+    clearCurrentState();
   };
 };

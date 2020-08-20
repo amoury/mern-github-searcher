@@ -1,14 +1,11 @@
-import {
-  User,
-  ReceiveUsersAction,
-  UserActionTypes,
-  UsersBySearchTermState,
-} from 'types/user.types';
+import { User, UserActionTypes, UserAction, UsersBySearchTermState } from 'types/user.types';
 
-export const usersReducer = (state: User[] = [], action: ReceiveUsersAction) => {
+export const usersReducer = (state: User[] = [], action: UserAction) => {
   switch (action.type) {
     case UserActionTypes.RECEIVE_USERS:
       return action.payload;
+    case UserActionTypes.RESET_USERS:
+      return [];
     default:
       return state;
   }
@@ -16,7 +13,7 @@ export const usersReducer = (state: User[] = [], action: ReceiveUsersAction) => 
 
 export const usersBySearchTermReducer = (
   state: UsersBySearchTermState = {},
-  action: ReceiveUsersAction
+  action: UserAction
 ) => {
   switch (action.type) {
     case UserActionTypes.RECEIVE_USERS:

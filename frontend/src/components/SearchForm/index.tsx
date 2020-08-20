@@ -2,13 +2,14 @@ import React, { useState, useEffect, useCallback, ChangeEvent } from 'react';
 import { connect } from 'react-redux';
 import _debounce from 'lodash/debounce';
 
-import { fetchSearchResults } from 'actions/search.actions';
+import { fetchSearchResults, clearSearch } from 'actions/search.actions';
 import searchIcon from 'assets/search-icon.svg';
 import clearIcon from 'assets/clear-icon.svg';
 import './SearchForm.scss';
 
 interface SearchFormProps {
   fetchSearchResults: Function;
+  clearSearch: Function;
 }
 
 interface SearchFormState {
@@ -19,30 +20,29 @@ interface SearchFormState {
 const SearchForm = (props: SearchFormProps): JSX.Element => {
   const [searchTerm, setSearchTerm] = useState<SearchFormState>({ query: '', entity: 'users' });
 
-  useEffect(() => {
-    if (searchTerm.query.length < 3) return; // When the text in the input is less than 3, clear the store results.
-    githubSearch();
-    return githubSearch.cancel;
-  }, [searchTerm.query, searchTerm.entity]);
-
-  // useEffect(() => {
-  //   if (query.length < 3) return;
-  //   search();
-  //   return search.cancel;
-  // }, [query, search, searchType]);
-
   const githubSearch = useCallback(
     _debounce(() => props.fetchSearchResults(searchTerm), 500),
     [searchTerm]
   );
+
+  useEffect(() => {
+    if (searchTerm.query.length < 3) return; // When the text in the input is less than 3, clear the store results.
+    githubSearch();
+    return githubSearch.cancel;
+  }, [searchTerm.query, searchTerm.entity, githubSearch]);
 
   const onInputChange = (event: ChangeEvent<HTMLInputElement | HTMLSelectElement>): void => {
     const { name, value } = event.target;
     setSearchTerm({ ...searchTerm, [name]: value });
   };
 
+  const onClearInput = (): void => {
+    setSearchTerm({ ...searchTerm, query: '' });
+    props.clearSearch();
+  };
+
   return (
-    <form className="form form--inline">
+    <form className="form form--inline" onSubmit={e => e.preventDefault()}>
       <div className="form__input-field">
         <div className="form__input-search form__input-icon">
           <img src={searchIcon} alt="search input field" />
@@ -50,11 +50,12 @@ const SearchForm = (props: SearchFormProps): JSX.Element => {
         <input
           name="query"
           type="text"
+          value={searchTerm.query}
           className="form__input"
           placeholder="Start typing to search..."
           onChange={onInputChange}
         />
-        <div className="form__input-clear form__input-icon">
+        <div className="form__input-clear form__input-icon" onClick={onClearInput}>
           <img src={clearIcon} alt="clear input field icon" />
         </div>
       </div>
@@ -73,4 +74,4 @@ const SearchForm = (props: SearchFormProps): JSX.Element => {
   );
 };
 
-export default connect(null, { fetchSearchResults })(SearchForm);
+export default connect(null, { fetchSearchResults, clearSearch })(SearchForm);

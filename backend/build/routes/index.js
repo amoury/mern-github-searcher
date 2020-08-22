@@ -37,35 +37,39 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = require("express");
+var express_validator_1 = require("express-validator");
+var RequestValidationError_1 = require("../errors/RequestValidationError");
 var search_controller_1 = require("../controllers/search.controller");
 var cache_1 = require("../cache");
 var router = express_1.Router();
 exports.router = router;
-router.post('/api/search', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, entity, query, items, error_1;
+var searchQueryValidations = [
+    express_validator_1.body('entity')
+        .matches(/\b(users|repositories)\b/)
+        .withMessage('The search type should either be users or repositories'),
+    express_validator_1.body('query')
+        .trim()
+        .isLength({ min: 3, max: 255 })
+        .withMessage('The search query must be atleast 3 characters'),
+];
+router.post('/api/search', searchQueryValidations, function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+    var _a, entity, query, errors, items;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
                 _a = req.body, entity = _a.entity, query = _a.query;
-                _b.label = 1;
-            case 1:
-                _b.trys.push([1, 3, , 4]);
+                errors = express_validator_1.validationResult(req);
+                if (!errors.isEmpty())
+                    throw new RequestValidationError_1.RequestValidationError(errors.array());
                 return [4 /*yield*/, search_controller_1.search({ entity: entity, query: query })];
-            case 2:
+            case 1:
                 items = _b.sent();
                 res.status(200).json({ items: items });
-                return [3 /*break*/, 4];
-            case 3:
-                error_1 = _b.sent();
-                return [3 /*break*/, 4];
-            case 4: return [2 /*return*/];
+                return [2 /*return*/];
         }
     });
 }); });
-router.get('/api/clear-cache', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    return __generator(this, function (_a) {
-        cache_1.client.flushall();
-        res.json({ message: 'Success' });
-        return [2 /*return*/];
-    });
-}); });
+router.get('/api/clear-cache', function (req, res) {
+    cache_1.client.flushall();
+    res.json({ message: 'Success' });
+});

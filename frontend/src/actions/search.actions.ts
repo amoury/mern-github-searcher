@@ -1,4 +1,5 @@
 import axios from 'axios';
+import _get from 'lodash/get';
 import { Dispatch } from 'redux';
 import {
   SearchQuery,
@@ -57,14 +58,14 @@ const handleSearch = async (searchQuery: SearchQuery, dispatch: Dispatch, store:
   // 3. If  no cache for given query, make api request to backend.
   try {
     const results = await axios.post<SearchResponse>('/api/search', { ...searchQuery });
+    console.log('results ', results);
     dispatch<UpdateCache>(updateCache(cacheKey, results.data.items));
     dispatch<UpdateSearchResults>(updateSearchResults(results.data.items));
     dispatch<UpdateStatusAction>(
       updateStatus({ ...store.status, isFetching: false, success: true })
     );
   } catch (error) {
-    dispatch<UpdateStatusAction>(
-      updateStatus({ ...store.status, isFetching: false, error: error.message })
-    );
+    const errors = _get(error, 'response.data.errors');
+    dispatch<UpdateStatusAction>(updateStatus({ ...store.status, isFetching: false, errors }));
   }
 };

@@ -4,7 +4,7 @@ export enum StatusActionTypes {
 
 export interface Status {
   isFetching: boolean;
-  error: string | null;
+  errors: { message: string }[] | null;
   success: boolean;
 }
 

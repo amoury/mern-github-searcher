@@ -2,7 +2,7 @@ import { Status, StatusAction, StatusActionTypes } from 'types/status.types';
 
 const defaultStatus: Status = {
   isFetching: false,
-  error: null,
+  errors: null,
   success: false,
 };
 

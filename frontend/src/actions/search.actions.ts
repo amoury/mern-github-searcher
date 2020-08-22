@@ -1,85 +1,70 @@
 import axios from 'axios';
 import { Dispatch } from 'redux';
-import _get from 'lodash/get';
 import {
   SearchQuery,
   SearchActionTypes,
-  RequestSearchAction,
-  ReceiveSearchAction,
+  UpdateSearchQueryAction,
+  ClearSearchQueryAction,
 } from 'types/search.types';
+import { SearchResponse, UpdateSearchResults } from 'types/results.types';
+import { UpdateCache } from 'types/cache.types';
 
-import { StoreState } from 'reducers/index';
-import { receiveUsers } from './user.actions';
-import { receiveRepos } from './repo.actions';
+import { clearSearchResults, updateSearchResults } from 'actions/results.actions';
+import { updateStatus } from 'actions/status.actions';
+import { updateCache } from 'actions/cache.actions';
+import { StoreState } from 'reducers';
+import { UpdateStatusAction } from 'types/status.types';
 
-export interface SearchResponse {
-  items: any;
-}
-
-export const requestSearch = (searchQuery: SearchQuery): RequestSearchAction => ({
-  type: SearchActionTypes.REQUEST_SEARCH,
+export const updateSearchQuery = (searchQuery: SearchQuery): UpdateSearchQueryAction => ({
+  type: SearchActionTypes.UPDATE_SEARCH_QUERY,
   payload: searchQuery,
-  isFetching: true,
 });
 
-export const resetSearchTerm = () => ({
-  type: SearchActionTypes.RESET_SEARCH,
-});
-
-export const handleResponse = (
-  results: SearchResponse,
-  searchQuery: SearchQuery,
-  dispatch: Dispatch
-): void => {
-  const { entity, query } = searchQuery;
-
-  if (entity === 'users') {
-    dispatch(receiveUsers(results, query));
-  }
-
-  if (entity === 'repositories') {
-    dispatch(receiveRepos(results, query));
-  }
-
-  dispatch<ReceiveSearchAction>({ type: SearchActionTypes.RECEIVE_SEARCH, isFetching: false });
+export const clearSearchQuery = (): ClearSearchQueryAction => {
+  return { type: SearchActionTypes.CLEAR_SEARCH_QUERY };
 };
 
-export const fetchSearchResults = (searchQuery: SearchQuery) => {
-  const { entity, query } = searchQuery;
+export const handleSearchQueryChange = (searchQuery: SearchQuery) => {
+  return (dispatch: Dispatch, getState: Function) => {
+    const store = getState();
+    dispatch(updateSearchQuery(searchQuery));
 
-  return async (dispatch: Dispatch, getState: Function) => {
-    dispatch(requestSearch(searchQuery));
-
-    const dataFromCache = getDataFromCache(getState(), searchQuery);
-
-    if (dataFromCache.length) {
-      return handleResponse(dataFromCache, searchQuery, dispatch);
+    if (searchQuery.query.length < 3 && store.searchResults.length) {
+      dispatch(clearSearchResults());
     }
 
-    try {
-      const response = await axios.get<SearchResponse>(
-        `https://api.github.com/search/${entity}?q=${query}`
-      );
-      handleResponse(response.data.items, searchQuery, dispatch);
-    } catch (error) {
-      // Do something with this error
-      console.error('err ', error.message);
+    if (searchQuery.query.length >= 3) {
+      handleSearch(searchQuery, dispatch, store);
     }
   };
 };
 
-export const getDataFromCache = (state: StoreState, searchQuery: SearchQuery) => {
-  const { entity, query } = searchQuery;
-  const cache = { users: state.usersBySearchTerms, repositories: state.reposBySearchTerms };
+const handleSearch = async (searchQuery: SearchQuery, dispatch: Dispatch, store: StoreState) => {
+  const cacheKey = JSON.stringify(searchQuery);
 
-  return _get(cache, [entity, query], []);
-};
+  // 1. Change the app status to `isFetching:true`
+  dispatch(updateStatus({ ...store.status, isFetching: true }));
 
-export const clearCurrentState = () => ({ type: SearchActionTypes.RESET_CURRENT_STATE });
+  // 2. Check the cache for the results, if results exist, update the `searchResults` state;
+  if (store.cache[cacheKey]) {
+    dispatch<UpdateSearchResults>(updateSearchResults(store.cache[cacheKey]));
+    dispatch<UpdateStatusAction>(
+      updateStatus({ ...store.status, isFetching: false, success: true })
+    );
+    return;
+  }
 
-export const clearSearch = () => {
-  return (dispatch: Dispatch) => {
-    dispatch(resetSearchTerm());
-    dispatch(clearCurrentState());
-  };
+  // 3. If  no cache for given query, make api request to backend.
+  try {
+    const results = await axios.post<SearchResponse>('/api/search', { ...searchQuery });
+    dispatch<UpdateCache>(updateCache(cacheKey, results.data.items));
+    dispatch<UpdateSearchResults>(updateSearchResults(results.data.items));
+    dispatch<UpdateStatusAction>(
+      updateStatus({ ...store.status, isFetching: false, success: true })
+    );
+  } catch (error) {
+    dispatch<UpdateStatusAction>(
+      updateStatus({ ...store.status, isFetching: false, error: error.message })
+    );
+  }
 };

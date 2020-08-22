@@ -1,6 +1,5 @@
 export enum UserActionTypes {
   RECEIVE_USERS = 'RECEIVE_USERS',
-  RESET_USERS = 'RESET_USERS',
 }
 
 export interface User {
@@ -20,8 +19,4 @@ export interface ReceiveUsersAction {
   searchTerm: string;
 }
 
-export interface ResetUsersAction {
-  type: UserActionTypes.RESET_USERS;
-}
-
-export type UserAction = ReceiveUsersAction | ResetUsersAction;
+export type UserAction = ReceiveUsersAction;

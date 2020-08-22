@@ -14,7 +14,7 @@ import './Results.scss';
 
 interface ResultsProps {
   users: User[];
-  repos: Repo[];
+  repositories: Repo[];
   search: SearchQuery;
 }
 
@@ -29,7 +29,7 @@ const renderResultsData = (records: Item[]) => (
 );
 
 const Results = (props: ResultsProps): JSX.Element => {
-  const { users, repos, search } = props;
+  const { search } = props;
   const records = _get(props, [search.entity]);
   const isFetching = _get(search, 'isFetching', false);
 
@@ -47,7 +47,7 @@ const mapStateToProps = (state: StoreState) => {
   return {
     users: state.users,
     search: state.search,
-    repos: state.repos,
+    repositories: state.repos,
   };
 };
 

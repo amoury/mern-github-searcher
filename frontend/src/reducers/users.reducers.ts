@@ -1,10 +1,11 @@
+import { SearchActionTypes, SearchAction } from 'types/search.types';
 import { User, UserActionTypes, UserAction, UsersBySearchTermState } from 'types/user.types';
 
-export const usersReducer = (state: User[] = [], action: UserAction) => {
+export const usersReducer = (state: User[] = [], action: UserAction | SearchAction) => {
   switch (action.type) {
     case UserActionTypes.RECEIVE_USERS:
       return action.payload;
-    case UserActionTypes.RESET_USERS:
+    case SearchActionTypes.RESET_CURRENT_STATE:
       return [];
     default:
       return state;

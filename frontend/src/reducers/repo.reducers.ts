@@ -1,10 +1,11 @@
 import { Repo, RepoAction, RepoActionTypes, ReposBySearchTermState } from 'types/repo.types';
+import { SearchActionTypes, SearchAction } from 'types/search.types';
 
-export const reposReducer = (state: Repo[] = [], action: RepoAction) => {
+export const reposReducer = (state: Repo[] = [], action: RepoAction | SearchAction) => {
   switch (action.type) {
     case RepoActionTypes.RECEIVE_REPOS:
       return action.payload;
-    case RepoActionTypes.RESET_REPOS:
+    case SearchActionTypes.RESET_CURRENT_STATE:
       return [];
     default:
       return state;

@@ -10,7 +10,3 @@ export const receiveRepos = (results: RepoSearchResponse, searchTerm: string) =>
   payload: results,
   searchTerm,
 });
-
-export const resetRepoRecords = () => ({
-  type: RepoActionTypes.RESET_REPOS,
-});

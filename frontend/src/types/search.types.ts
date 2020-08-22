@@ -2,10 +2,8 @@ export enum SearchActionTypes {
   REQUEST_SEARCH = 'REQUEST_SEARCH',
   RECEIVE_SEARCH = 'RECEIVE_SEARCH',
   RESET_SEARCH = 'RESET_SEARCH',
-}
-
-export enum UserActionTypes {
-  FETCH_USERS,
+  SET_SEARCH = 'SET_SEARCH',
+  RESET_CURRENT_STATE = 'RESET_CURRENT_STATE',
 }
 
 export interface SearchQuery {
@@ -28,4 +26,18 @@ export interface ResetSearchAction {
   type: SearchActionTypes.RESET_SEARCH;
 }
 
-export type SearchAction = RequestSearchAction | ReceiveSearchAction | ResetSearchAction;
+export interface ResetCurrentState {
+  type: SearchActionTypes.RESET_CURRENT_STATE;
+}
+
+export interface SetSearchAction {
+  type: SearchActionTypes.SET_SEARCH;
+  payload: SearchQuery;
+}
+
+export type SearchAction =
+  | RequestSearchAction
+  | ReceiveSearchAction
+  | ResetSearchAction
+  | ResetCurrentState
+  | SetSearchAction;

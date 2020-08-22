@@ -2,7 +2,6 @@ import { User } from './user.types';
 
 export enum RepoActionTypes {
   RECEIVE_REPOS = 'RECEIVE_REPOS',
-  RESET_REPOS = 'RESET_REPOS',
 }
 
 export interface Repo {
@@ -22,8 +21,4 @@ export interface ReceiveReposAction {
   searchTerm: string;
 }
 
-export interface ResetReposAction {
-  type: RepoActionTypes.RESET_REPOS;
-}
-
-export type RepoAction = ReceiveReposAction | ResetReposAction;
+export type RepoAction = ReceiveReposAction;

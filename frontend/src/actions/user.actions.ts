@@ -10,7 +10,3 @@ export const receiveUsers = (results: UserSearchResponse, searchTerm: string) =>
   payload: results,
   searchTerm,
 });
-
-export const resetUserRecords = () => ({
-  type: UserActionTypes.RESET_USERS,
-});

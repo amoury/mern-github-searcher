@@ -9,14 +9,11 @@ import {
 } from 'types/search.types';
 
 import { StoreState } from 'reducers/index';
-import { User } from 'types/user.types';
-import { Repo } from 'types/repo.types';
-import { receiveUsers, resetUserRecords } from './user.actions';
-import { receiveRepos, resetRepoRecords } from './repo.actions';
+import { receiveUsers } from './user.actions';
+import { receiveRepos } from './repo.actions';
 
 export interface SearchResponse {
   items: any;
-  // items: User[] | Repo[];
 }
 
 export const requestSearch = (searchQuery: SearchQuery): RequestSearchAction => ({
@@ -59,11 +56,15 @@ export const fetchSearchResults = (searchQuery: SearchQuery) => {
       return handleResponse(dataFromCache, searchQuery, dispatch);
     }
 
-    const response = await axios.get<SearchResponse>(
-      `https://api.github.com/search/${entity}?q=${query}`
-    );
-
-    handleResponse(response.data.items, searchQuery, dispatch);
+    try {
+      const response = await axios.get<SearchResponse>(
+        `https://api.github.com/search/${entity}?q=${query}`
+      );
+      handleResponse(response.data.items, searchQuery, dispatch);
+    } catch (error) {
+      // Do something with this error
+      console.error('err ', error.message);
+    }
   };
 };
 
@@ -74,16 +75,11 @@ export const getDataFromCache = (state: StoreState, searchQuery: SearchQuery) =>
   return _get(cache, [entity, query], []);
 };
 
-export const clearCurrentState = () => {
-  return (dispatch: Dispatch) => {
-    dispatch(resetUserRecords());
-    dispatch(resetRepoRecords());
-  };
-};
+export const clearCurrentState = () => ({ type: SearchActionTypes.RESET_CURRENT_STATE });
 
 export const clearSearch = () => {
   return (dispatch: Dispatch) => {
     dispatch(resetSearchTerm());
-    clearCurrentState();
+    dispatch(clearCurrentState());
   };
 };

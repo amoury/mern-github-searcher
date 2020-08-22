@@ -12,7 +12,7 @@ export const search = async (searchQuery: SearchQuery) => {
     const cacheValue = await getAsync(cacheKey);
 
     if (cacheValue) {
-      console.log('SERVING FROM CACHE >>> ', cacheValue);
+      console.log('SERVING FROM CACHE >>> ');
       return JSON.parse(cacheValue);
     }
 
@@ -26,7 +26,7 @@ export const search = async (searchQuery: SearchQuery) => {
     if (entity === 'repositories') {
       return handleRepoResponse(items, cacheKey);
     }
-  } catch (error) {}
+  } catch (error) {} // Error Handling
 };
 
 const requiredUserFields = [
@@ -44,6 +44,7 @@ const requiredUserFields = [
   'bio',
   'public_repos',
   'followers',
+  'following',
 ];
 
 const requiredRepoFields = [
@@ -61,18 +62,35 @@ export const handleUserResponse = async (users: User[], cacheKey: string) => {
   const userDetailUrls = users.map(user => user.url);
   try {
     const users = await getBulkUserDetails(userDetailUrls);
-    const response = users.map(user => user.data).map(user => _pick(user, requiredUserFields));
+    const response = users
+      .map(user => user.data)
+      .map(user => ({
+        ..._pick(user, requiredUserFields),
+        stats: {
+          public_repos: user.public_repos,
+          followers: user.followers,
+          following: user.following,
+        },
+      }));
     client.set(cacheKey, JSON.stringify(response), 'EX', CACHE_DURATION);
     return response;
   } catch (error) {
-    console.error('error >>>> ', error.message);
+    console.error('error >>>> ', error.message); // Error Handling
   }
 };
 
 export const handleRepoResponse = (repos: Repo[], cacheKey: string) => {
   const response = repos
     .map(repo => _pick(repo, requiredRepoFields))
-    .map(repo => ({ ...repo, type: 'Repository' }));
+    .map(repo => ({
+      ...repo,
+      type: 'Repository',
+      stats: {
+        stargazers: repo.stargazers_count,
+        watchers: repo.watchers_count,
+        forks: repo.forks_count,
+      },
+    }));
   client.set(cacheKey, JSON.stringify(response), 'EX', CACHE_DURATION);
   return response;
 };

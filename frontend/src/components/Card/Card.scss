@@ -1,0 +1,58 @@
+.Card {
+  border: 1px solid black;
+
+  &__description {
+    display: flex;
+  }
+
+  &__avatar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 20px;
+    background: linear-gradient(161deg, rgba(97, 155, 252, 1) 0%, rgba(99, 78, 237, 1) 100%);
+  }
+
+  &__image-wrapper {
+    border-radius: 50%;
+    overflow: hidden;
+    width: 120px;
+    height: 120px;
+    box-shadow: 7px 7px 5px -4px rgba(50, 50, 50, 0.5);
+
+    img {
+      max-width: 100%;
+    }
+  }
+
+  &__information {
+    padding: 20px;
+
+    h2 {
+      margin: 0;
+    }
+  }
+
+  &__meta {
+    color: #929191;
+  }
+
+  &__subtitle {
+    margin: 0;
+    font-size: 1.1em;
+  }
+
+  &__stat-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  &__stat {
+    margin: 0;
+  }
+}
+
+.Card__statistics {
+  display: flex;
+}

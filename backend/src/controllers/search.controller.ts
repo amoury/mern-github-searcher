@@ -70,7 +70,9 @@ export const handleUserResponse = async (users: User[], cacheKey: string) => {
 };
 
 export const handleRepoResponse = (repos: Repo[], cacheKey: string) => {
-  const response = repos.map(repo => _pick(repo, requiredRepoFields));
+  const response = repos
+    .map(repo => _pick(repo, requiredRepoFields))
+    .map(repo => ({ ...repo, type: 'Repository' }));
   client.set(cacheKey, JSON.stringify(response), 'EX', CACHE_DURATION);
   return response;
 };

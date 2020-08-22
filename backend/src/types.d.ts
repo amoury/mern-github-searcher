@@ -23,10 +23,11 @@ export interface User {
 export interface Repo {
   name: string;
   full_name: string;
-  owner: string;
+  owner: { login: string };
   html_url: string;
   description: string;
   stargazers_count: string;
   watchers_count: string;
   forks_count: string;
+  type: string;
 }

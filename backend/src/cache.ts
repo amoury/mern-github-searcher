@@ -1,7 +1,8 @@
 import redis from 'redis';
 import { promisify } from 'util';
 
-const redisUrl = 'redis://127.0.0.1:6379';
+const redisUrl = 'redis://redis:6379';
+// const redisUrl = 'redis://127.0.0.1:6379';
 const client = redis.createClient(redisUrl);
 const CACHE_DURATION = 7200;
 

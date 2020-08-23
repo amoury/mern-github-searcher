@@ -10,6 +10,8 @@ axios.interceptors.request.use(config => {
 
 export const getSearchResults = async (searchQuery: SearchQuery) => {
   const { query, entity } = searchQuery;
+  console.log('github token >>>> ', process.env.GITHUB_TOKEN);
+  console.log('token from dc  >>>> ', process.env.GITHUB_TOKEN_1);
   return await axios.get(`https://api.github.com/search/${entity}?q=${query}`);
 };
 

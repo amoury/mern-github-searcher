@@ -1,7 +1,25 @@
 .Results {
   opacity: 0;
-  width: 80%;
+  width: 100vw;
+  // width: 80%;
   transition: all 0.5s ease-in;
+  display: flex;
+  justify-content: center;
+  // flex-wrap: wrap;
+
+  .Results--data {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    max-width: 1300px;
+
+    @media (min-width: 700px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media (min-width: 1020px) {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
 
   &--halfheight {
     display: flex;
@@ -12,6 +30,5 @@
 
   &--fullheight {
     opacity: 1;
-    flex: 2;
   }
 }

@@ -9,8 +9,14 @@ export enum ResponseItemType {
 }
 
 export interface ResponseItem {
-  login: number;
+  id: number;
+  login?: string;
   type: ResponseItemType;
+  avatar_url?: string;
+  name?: string;
+  html_url: string;
+  stats: object[];
+  meta: string[];
 }
 
 export interface SearchResponse {

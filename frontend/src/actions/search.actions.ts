@@ -28,9 +28,10 @@ export const clearSearchQuery = (): ClearSearchQueryAction => {
 export const handleSearchQueryChange = (searchQuery: SearchQuery) => {
   return (dispatch: Dispatch, getState: Function) => {
     const store = getState();
+    const { searchResults } = store;
     dispatch(updateSearchQuery(searchQuery));
 
-    if (searchQuery.query.length < 3 && store.searchResults.length) {
+    if (searchQuery.query.length < 3 && searchResults.length) {
       dispatch(clearSearchResults());
     }
 

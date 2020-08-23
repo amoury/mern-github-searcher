@@ -3,6 +3,7 @@ import _pick from 'lodash/pick';
 import { getAsync, client, CACHE_DURATION } from './../cache';
 import { SearchQuery, User, Repo } from '../types';
 import { getBulkUserDetails, getSearchResults } from '../api';
+import { AuthorizationError } from '../errors/AuthorizationError';
 
 export const search = async (searchQuery: SearchQuery) => {
   const { entity } = searchQuery;
@@ -26,7 +27,10 @@ export const search = async (searchQuery: SearchQuery) => {
     if (entity === 'repositories') {
       return handleRepoResponse(items, cacheKey);
     }
-  } catch (error) {} // Error Handling
+  } catch (error) {
+    const message = _get(error, 'response.data.message');
+    throw new AuthorizationError(message);
+  }
 };
 
 const requiredUserFields = [
@@ -36,27 +40,14 @@ const requiredUserFields = [
   'url',
   'type',
   'html_url',
+  'stats',
+  'meta',
   'name',
-  'company',
-  'blog',
   'hireable',
-  'location',
   'bio',
-  'public_repos',
-  'followers',
-  'following',
 ];
 
-const requiredRepoFields = [
-  'name',
-  'full_name',
-  'owner.login',
-  'html_url',
-  'description',
-  'stargazers_count',
-  'watchers_count',
-  'forks_count',
-];
+const requiredRepoFields = ['type', 'meta', 'login', 'name', 'stats', 'html_url', 'description'];
 
 export const handleUserResponse = async (users: User[], cacheKey: string) => {
   const userDetailUrls = users.map(user => user.url);
@@ -66,6 +57,8 @@ export const handleUserResponse = async (users: User[], cacheKey: string) => {
       .map(user => user.data)
       .map(user => ({
         ..._pick(user, requiredUserFields),
+        meta: [user.blog, user.company, user.location],
+        description: user.bio,
         stats: {
           public_repos: user.public_repos,
           followers: user.followers,
@@ -75,22 +68,25 @@ export const handleUserResponse = async (users: User[], cacheKey: string) => {
     client.set(cacheKey, JSON.stringify(response), 'EX', CACHE_DURATION);
     return response;
   } catch (error) {
-    console.error('error >>>> ', error.message); // Error Handling
+    const message = _get(error, 'response.data.message');
+    throw new AuthorizationError(message);
   }
 };
 
 export const handleRepoResponse = (repos: Repo[], cacheKey: string) => {
   const response = repos
-    .map(repo => _pick(repo, requiredRepoFields))
     .map(repo => ({
       ...repo,
       type: 'Repository',
+      login: _get(repo, 'owner.login', ''),
+      meta: [repo.full_name],
       stats: {
         stargazers: repo.stargazers_count,
         watchers: repo.watchers_count,
         forks: repo.forks_count,
       },
-    }));
+    }))
+    .map(repo => _pick(repo, requiredRepoFields));
   client.set(cacheKey, JSON.stringify(response), 'EX', CACHE_DURATION);
   return response;
 };

@@ -1,83 +1,52 @@
 import React from 'react';
+import _startCase from 'lodash/startCase';
 import './Card.scss';
+import { ResponseItem } from 'types/results.types';
 
-// {
-//   name: 'amoury',
-//   full_name: 'submit50/amoury',
-//   owner: {
-//     login: 'submit50'
-//   },
-//   html_url: 'https://github.com/submit50/amoury',
-//   description: null,
-//   stargazers_count: 1,
-//   watchers_count: 1,
-//   forks_count: 0
-// },
+interface CardProps {
+  data: ResponseItem;
+}
 
-// {
-//   login: 'amoury',
-//   id: 16633104,
-//   avatar_url: 'https://avatars1.githubusercontent.com/u/16633104?v=4',
-//   url: 'https://api.github.com/users/amoury',
-//   type: 'User',
-//   html_url: 'https://github.com/amoury',
-//   name: 'Ansar Memon (Amoury)',
-//   company: 'Namshi.com',
-//   blog: 'amourycodes.com',
-//   hireable: true,
-//   location: null,
-//   bio: 'Frontend Engineer\r\n',
-//   public_repos: 98,
-//   followers: 5,
-//   following: 3
-// }
+const Card = (props: CardProps): JSX.Element => {
+  const { id, avatar_url, name, html_url, login, stats, meta } = props.data;
+  const sanitizedMeta = meta.filter(meta => meta);
 
-// interface CardProps {
-//   data: object;
-// }
-
-const Card = (): JSX.Element => {
   return (
-    <div className="Card">
+    <div key={id} className="Card">
       <div className="Card__description">
         <div className="Card__avatar">
-          <div className="Card__image-wrapper">
-            <img
-              loading="lazy"
-              src="https://avatars1.githubusercontent.com/u/16633104?v=4"
-              alt={`user profile`}
-            />
-          </div>
-          <a href="https://github.com/amoury" target="_blank" rel="noopener noreferrer">
-            <button className="Card__cta-button">Visit</button>
-          </a>
+          {avatar_url && (
+            <div className="Card__image-wrapper">
+              <img loading="lazy" src={avatar_url} alt={`${name} avatar`} />
+            </div>
+          )}
         </div>
         <div className="Card__information">
-          <h2>Ansar Memon (Amoury)</h2>
+          <h2>{name ? name : login}</h2>
           <div>
-            <p className="Card__subtitle">@amoury</p>
-            <div className="Card__meta">
-              <span>{['Namshi.com', 'Dubai'].join(' | ')}</span>
-            </div>
+            <p className="Card__subtitle">@{login}</p>
+            {Boolean(sanitizedMeta.length) && (
+              <div className="Card__meta">
+                <span>{sanitizedMeta.join(' | ')}</span>
+              </div>
+            )}
           </div>
-          <div className="Card__description"></div>
+          <div className="Card__content">
+            <a href={html_url} target="_blank" rel="noopener noreferrer">
+              <button className="Card__cta-button">Visit Profile</button>
+            </a>
+          </div>
+        </div>
+      </div>
 
-          <div className="Card__footer">
-            <div className="Card__statistics">
-              <div className="Card__stat-column">
-                <h3 className="Card__stat">98</h3>
-                <p className="Card__stat-title">Public Repos</p>
-              </div>
-              <div className="Card__stat-column">
-                <h3 className="Card__stat">5</h3>
-                <p className="Card__stat-title">Followers</p>
-              </div>
-              <div className="Card__stat-column">
-                <h3 className="Card__stat">3</h3>
-                <p className="Card__stat-title">Following</p>
-              </div>
+      <div className="Card__footer">
+        <div className="Card__statistics">
+          {Object.entries(stats).map(([key, value]) => (
+            <div key={key} className="Card__stat-column">
+              <h3 className="Card__stat">{value}</h3>
+              <p className="Card__stat-title">{_startCase(key)}</p>
             </div>
-          </div>
+          ))}
         </div>
       </div>
     </div>

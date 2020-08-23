@@ -11,12 +11,17 @@ a {
 
 .Card {
   padding: 20px;
-  margin: 20px;
+  margin: 10px;
   border-radius: 10px;
-  box-shadow: 25px 25px 51px #dedede, -25px -25px 51px #ffffff;
+  box-shadow: 11px 11px 22px #d4d4d4, -11px -11px 22px #ffffff;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 
   &__description {
     display: flex;
+    justify-content: center;
   }
 
   &__avatar {
@@ -29,8 +34,8 @@ a {
   &__image-wrapper {
     border-radius: 50%;
     overflow: hidden;
-    width: 120px;
-    height: 120px;
+    width: 90px;
+    height: 90px;
     box-shadow: -4px 3px 0px 0px $primary-blue;
 
     img {
@@ -39,17 +44,23 @@ a {
   }
 
   &__information {
+    margin-left: 10px;
+
     h2 {
       margin: 5px 0;
       color: $primary-blue;
       text-align: center;
+      font-size: 1.1em;
+      max-width: 200px;
+      text-overflow: ellipsis;
+      overflow: hidden;
     }
   }
 
   &__subtitle {
     margin: 0;
     margin-bottom: 10px;
-    font-size: 1.3em;
+    font-size: 0.8em;
     text-align: center;
   }
 
@@ -57,14 +68,21 @@ a {
     display: flex;
     color: $light-grey;
     justify-content: center;
+    font-size: 0.8em;
+    max-width: 200px;
+    padding: 0 5px;
+    text-align: center;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+
+  &__content {
+    display: flex;
+    justify-content: center;
   }
 
   &__cta-button {
-    -webkit-font-smoothing: antialiased;
-    text-rendering: optimizeSpeed;
-    box-sizing: border-box;
     margin-top: 20px;
-    -webkit-box-align: center;
     align-items: center;
     background-color: $primary-blue;
     border: 0;
@@ -80,6 +98,10 @@ a {
     text-transform: uppercase;
     border-radius: 28px;
     padding: 0 24px;
+
+    &:focus {
+      outline: none;
+    }
   }
 
   &__statistics {
@@ -92,7 +114,7 @@ a {
     flex-direction: column;
     align-items: center;
     border-right: 2px solid $light-grey;
-    padding: 0 20px;
+    padding: 0 5px;
 
     &:last-child {
       border-right: none;
@@ -107,6 +129,7 @@ a {
   &__stat-title {
     font-size: 0.7em;
     color: $light-grey;
+    text-align: center;
   }
 
   &__footer {

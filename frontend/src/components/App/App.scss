@@ -4,12 +4,15 @@ $somecolor: #d6d6d6;
 
 body {
   font-family: Lato, 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeSpeed;
+  box-sizing: border-box;
 }
 
 .App {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  height: 98vh;
+  min-height: 98vh;
   align-items: center;
 }

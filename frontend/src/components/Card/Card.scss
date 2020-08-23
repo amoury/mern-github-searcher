@@ -1,4 +1,13 @@
 $primary-blue: #3356e8;
+$light-grey: #9a9999;
+
+a {
+  text-decoration: none;
+
+  &:focus {
+    outline: none;
+  }
+}
 
 .Card {
   padding: 20px;
@@ -14,6 +23,7 @@ $primary-blue: #3356e8;
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
   }
 
   &__image-wrapper {
@@ -45,8 +55,31 @@ $primary-blue: #3356e8;
 
   &__meta {
     display: flex;
-    color: #9a9999;
+    color: $light-grey;
     justify-content: center;
+  }
+
+  &__cta-button {
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeSpeed;
+    box-sizing: border-box;
+    margin-top: 20px;
+    -webkit-box-align: center;
+    align-items: center;
+    background-color: $primary-blue;
+    border: 0;
+    box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.14),
+      0 1px 10px 0 rgba(0, 0, 0, 0.12);
+    color: #fff;
+    cursor: pointer;
+    display: inline-flex;
+    font-size: 0.7em;
+    font-weight: 600;
+    height: 30px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    border-radius: 28px;
+    padding: 0 24px;
   }
 
   &__statistics {
@@ -58,7 +91,7 @@ $primary-blue: #3356e8;
     display: flex;
     flex-direction: column;
     align-items: center;
-    border-right: 2px solid #9a9999;
+    border-right: 2px solid $light-grey;
     padding: 0 20px;
 
     &:last-child {
@@ -73,7 +106,7 @@ $primary-blue: #3356e8;
 
   &__stat-title {
     font-size: 0.7em;
-    color: #9a9999;
+    color: $light-grey;
   }
 
   &__footer {

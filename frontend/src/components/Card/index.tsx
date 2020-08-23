@@ -48,6 +48,9 @@ const Card = (): JSX.Element => {
               alt={`user profile`}
             />
           </div>
+          <a href="https://github.com/amoury" target="_blank" rel="noopener noreferrer">
+            <button className="Card__cta-button">Visit</button>
+          </a>
         </div>
         <div className="Card__information">
           <h2>Ansar Memon (Amoury)</h2>

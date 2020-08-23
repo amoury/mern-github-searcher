@@ -29,7 +29,7 @@ After adding this token, in the root of the app directory, just type the command
 docker-compose up --build
 ```
 
-This will build the images and create all the necessary networks.
+This will build the images with all the necessary dependencies and create all the necessary networks.
 
 ### Ports
 
@@ -67,3 +67,20 @@ The results are cached in the `redis` store for upto 2 hours. Once again the key
 In the backend, error handling is done via a custom Error handling middleware. Each type of error is handled by a different class of error which is extended from an inbuilt `Error()` class.
 
 In the frontend, if there are any error from api calls, these errors are updated in a seperate piece in the application state - called `status`. This state is then checked to show or hide the errors on the UI.
+
+#### APIs
+
+Frontend only needs to call a single api regardless of the entity type you are searching for -
+
+endpoint - `/api/search`
+method - `POST`
+body -
+
+```typescript
+{
+  "query" : string;
+  "entity": string<'users' | 'repositories'>;
+}
+```
+
+The data is validated in the backend and if any of the required fields are missing, it throws an error.

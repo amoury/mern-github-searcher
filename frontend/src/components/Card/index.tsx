@@ -14,13 +14,13 @@ const Card = (props: CardProps): JSX.Element => {
   return (
     <div key={id} className="Card">
       <div className="Card__description">
-        <div className="Card__avatar">
-          {avatar_url && (
+        {avatar_url && (
+          <div className="Card__avatar">
             <div className="Card__image-wrapper">
               <img loading="lazy" src={avatar_url} alt={`${name} avatar`} />
             </div>
-          )}
-        </div>
+          </div>
+        )}
         <div className="Card__information">
           <h2>{name ? name : login}</h2>
           <div>

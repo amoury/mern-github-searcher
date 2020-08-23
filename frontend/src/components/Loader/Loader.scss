@@ -7,7 +7,6 @@ $white: #eee;
 $width: 70px;
 
 .Loader {
-  // border: 1px solid black;
   position: relative;
   margin: 0 auto;
   width: $width;
@@ -75,16 +74,3 @@ $width: 70px;
     stroke: $yellow;
   }
 }
-
-// demo-specific
-// body {
-//   background-color: $white;
-// }
-// .showbox {
-//   position: absolute;
-//   top: 0;
-//   bottom: 0;
-//   left: 0;
-//   right: 0;
-//   padding: 5%;
-// }

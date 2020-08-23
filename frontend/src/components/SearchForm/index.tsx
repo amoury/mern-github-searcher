@@ -1,4 +1,4 @@
-import React, { useRef, useCallback } from 'react';
+import React, { useRef, useCallback, useEffect } from 'react';
 import { connect } from 'react-redux';
 import _get from 'lodash/get';
 import _debounce from 'lodash/debounce';
@@ -23,6 +23,12 @@ const SearchForm = (props: SearchFormProps): JSX.Element => {
     _debounce((query: SearchQuery) => props.handleSearchQueryChange(query), 300),
     []
   );
+
+  useEffect(() => {
+    if (queryRef.current) {
+      queryRef.current.focus();
+    }
+  }, []);
 
   const onInputChange = (): void => {
     const query = _get(queryRef, 'current.value');

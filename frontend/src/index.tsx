@@ -14,12 +14,14 @@ import App from 'components/App';
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['usersBySearchTerms', 'reposBySearchTerms'],
+  whitelist: ['cache'],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-const store = createStore(persistedReducer, composeWithDevTools(applyMiddleware(thunk)));
+const composeEnhancers = composeWithDevTools({ trace: true });
+
+const store = createStore(persistedReducer, composeEnhancers(applyMiddleware(thunk)));
 const persistor = persistStore(store);
 
 ReactDOM.render(

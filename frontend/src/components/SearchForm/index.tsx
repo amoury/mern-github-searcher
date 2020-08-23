@@ -1,48 +1,42 @@
-import React, { useState, useEffect, useCallback, ChangeEvent } from 'react';
+import React, { useRef, useCallback } from 'react';
 import { connect } from 'react-redux';
+import _get from 'lodash/get';
 import _debounce from 'lodash/debounce';
 
-import { fetchSearchResults, clearSearch, clearCurrentState } from 'actions/search.actions';
+import { SearchQuery } from 'types/search.types';
+import { handleSearchQueryChange, clearSearchQuery } from 'actions/search.actions';
+
 import searchIcon from 'assets/search-icon.svg';
 import clearIcon from 'assets/clear-icon.svg';
 import './SearchForm.scss';
 
 interface SearchFormProps {
-  fetchSearchResults: Function;
-  clearSearch: Function;
-  clearCurrentState: Function;
-}
-
-interface SearchFormState {
-  query: string;
-  entity: string;
+  handleSearchQueryChange: Function;
+  clearSearchQuery: Function;
 }
 
 const SearchForm = (props: SearchFormProps): JSX.Element => {
-  const [searchTerm, setSearchTerm] = useState<SearchFormState>({ query: '', entity: 'users' });
+  const queryRef = useRef<HTMLInputElement>(null);
+  const entityRef = useRef<HTMLSelectElement>(null);
 
-  const githubSearch = useCallback(
-    _debounce(() => props.fetchSearchResults(searchTerm), 500),
-    [searchTerm]
+  const updateQuery = useCallback(
+    _debounce((query: SearchQuery) => props.handleSearchQueryChange(query), 300),
+    []
   );
 
-  useEffect(() => {
-    if (searchTerm.query.length < 3) {
-      props.clearCurrentState();
-      return;
-    }
-    githubSearch();
-    return githubSearch.cancel;
-  }, [searchTerm.query, searchTerm.entity, githubSearch]);
+  const onInputChange = (): void => {
+    const query = _get(queryRef, 'current.value');
+    const entity = _get(entityRef, 'current.value');
 
-  const onInputChange = (event: ChangeEvent<HTMLInputElement | HTMLSelectElement>): void => {
-    const { name, value } = event.target;
-    setSearchTerm({ ...searchTerm, [name]: value });
+    const searchQuery = { query, entity };
+    updateQuery(searchQuery);
   };
 
-  const onClearInput = (): void => {
-    setSearchTerm({ ...searchTerm, query: '' });
-    props.clearSearch();
+  const onClearInput = () => {
+    if (queryRef.current) {
+      queryRef.current.value = '';
+    }
+    props.clearSearchQuery();
   };
 
   return (
@@ -52,9 +46,9 @@ const SearchForm = (props: SearchFormProps): JSX.Element => {
           <img src={searchIcon} alt="search input field" />
         </div>
         <input
+          ref={queryRef}
           name="query"
           type="text"
-          value={searchTerm.query}
           className="form__input"
           placeholder="Start typing to search..."
           onChange={onInputChange}
@@ -65,11 +59,7 @@ const SearchForm = (props: SearchFormProps): JSX.Element => {
       </div>
 
       <div className="form__input-field">
-        <select
-          name="entity"
-          className="form__select"
-          defaultValue={searchTerm.entity}
-          onChange={onInputChange}>
+        <select ref={entityRef} name="entity" className="form__select" onChange={onInputChange}>
           <option value="users">Users</option>
           <option value="repositories">Repositories</option>
         </select>
@@ -78,4 +68,4 @@ const SearchForm = (props: SearchFormProps): JSX.Element => {
   );
 };
 
-export default connect(null, { fetchSearchResults, clearSearch, clearCurrentState })(SearchForm);
+export default connect(null, { handleSearchQueryChange, clearSearchQuery })(SearchForm);

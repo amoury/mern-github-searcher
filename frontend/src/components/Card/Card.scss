@@ -1,0 +1,139 @@
+$primary-blue: #3356e8;
+$light-grey: #9a9999;
+
+a {
+  text-decoration: none;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.Card {
+  padding: 20px;
+  margin: 10px;
+  border-radius: 10px;
+  box-shadow: 11px 11px 22px #d4d4d4, -11px -11px 22px #ffffff;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  &__description {
+    display: flex;
+    justify-content: center;
+  }
+
+  &__avatar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+
+  &__image-wrapper {
+    border-radius: 50%;
+    overflow: hidden;
+    width: 90px;
+    height: 90px;
+    box-shadow: -4px 3px 0px 0px $primary-blue;
+
+    img {
+      max-width: 100%;
+    }
+  }
+
+  &__information {
+    margin-left: 10px;
+
+    h2 {
+      margin: 5px 0;
+      color: $primary-blue;
+      text-align: center;
+      font-size: 1.1em;
+      max-width: 200px;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+  }
+
+  &__subtitle {
+    margin: 0;
+    margin-bottom: 10px;
+    font-size: 0.8em;
+    text-align: center;
+  }
+
+  &__meta {
+    display: flex;
+    color: $light-grey;
+    justify-content: center;
+    font-size: 0.8em;
+    max-width: 200px;
+    padding: 0 5px;
+    text-align: center;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+
+  &__content {
+    display: flex;
+    justify-content: center;
+  }
+
+  &__cta-button {
+    margin-top: 20px;
+    align-items: center;
+    background-color: $primary-blue;
+    border: 0;
+    box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.14),
+      0 1px 10px 0 rgba(0, 0, 0, 0.12);
+    color: #fff;
+    cursor: pointer;
+    display: inline-flex;
+    font-size: 0.7em;
+    font-weight: 600;
+    height: 30px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    border-radius: 28px;
+    padding: 0 24px;
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  &__statistics {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  &__stat-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-right: 2px solid $light-grey;
+    padding: 0 5px;
+
+    &:last-child {
+      border-right: none;
+    }
+  }
+
+  &__stat,
+  &__stat-title {
+    margin: 0;
+  }
+
+  &__stat-title {
+    font-size: 0.7em;
+    color: $light-grey;
+    text-align: center;
+  }
+
+  &__footer {
+    margin-top: 30px;
+    // border: 1px solid tomato;
+  }
+}

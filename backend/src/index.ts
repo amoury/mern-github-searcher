@@ -13,10 +13,6 @@ app.use(bodyParser.json());
 
 app.use(router);
 
-app.get('/api/search-something', (req, res) => {
-  throw new Error('hello');
-});
-
 app.use(errorHandler);
 
 app.listen(3001, () => console.log('Listening on port 3001'));

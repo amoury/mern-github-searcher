@@ -42,13 +42,20 @@ const Card = (): JSX.Element => {
       <div className="Card__description">
         <div className="Card__avatar">
           <div className="Card__image-wrapper">
-            <img src="https://avatars1.githubusercontent.com/u/16633104?v=4" alt="user image" />
+            <img
+              loading="lazy"
+              src="https://avatars1.githubusercontent.com/u/16633104?v=4"
+              alt={`user profile`}
+            />
           </div>
         </div>
         <div className="Card__information">
           <h2>Ansar Memon (Amoury)</h2>
-          <div className="Card__meta">
+          <div>
             <p className="Card__subtitle">@amoury</p>
+            <div className="Card__meta">
+              <span>{['Namshi.com', 'Dubai'].join(' | ')}</span>
+            </div>
           </div>
           <div className="Card__description"></div>
 

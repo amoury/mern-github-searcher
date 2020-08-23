@@ -11,7 +11,11 @@ const App = () => {
       <Header />
       <SearchForm />
       <Results />
-      <Card />
+      <div style={{ display: 'flex', margin: '0 auto', flexWrap: 'wrap' }}>
+        <Card />
+        <Card />
+        <Card />
+      </div>
     </div>
   );
 };

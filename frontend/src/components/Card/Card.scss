@@ -1,5 +1,10 @@
+$primary-blue: #3356e8;
+
 .Card {
-  border: 1px solid black;
+  padding: 20px;
+  margin: 20px;
+  border-radius: 10px;
+  box-shadow: 25px 25px 51px #dedede, -25px -25px 51px #ffffff;
 
   &__description {
     display: flex;
@@ -9,8 +14,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 0 20px;
-    background: linear-gradient(161deg, rgba(97, 155, 252, 1) 0%, rgba(99, 78, 237, 1) 100%);
   }
 
   &__image-wrapper {
@@ -18,7 +21,7 @@
     overflow: hidden;
     width: 120px;
     height: 120px;
-    box-shadow: 7px 7px 5px -4px rgba(50, 50, 50, 0.5);
+    box-shadow: -4px 3px 0px 0px $primary-blue;
 
     img {
       max-width: 100%;
@@ -26,33 +29,55 @@
   }
 
   &__information {
-    padding: 20px;
-
     h2 {
-      margin: 0;
+      margin: 5px 0;
+      color: $primary-blue;
+      text-align: center;
     }
-  }
-
-  &__meta {
-    color: #929191;
   }
 
   &__subtitle {
     margin: 0;
-    font-size: 1.1em;
+    margin-bottom: 10px;
+    font-size: 1.3em;
+    text-align: center;
+  }
+
+  &__meta {
+    display: flex;
+    color: #9a9999;
+    justify-content: center;
+  }
+
+  &__statistics {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
   }
 
   &__stat-column {
     display: flex;
     flex-direction: column;
     align-items: center;
+    border-right: 2px solid #9a9999;
+    padding: 0 20px;
+
+    &:last-child {
+      border-right: none;
+    }
   }
 
-  &__stat {
+  &__stat,
+  &__stat-title {
     margin: 0;
   }
-}
 
-.Card__statistics {
-  display: flex;
+  &__stat-title {
+    font-size: 0.7em;
+    color: #9a9999;
+  }
+
+  &__footer {
+    margin-top: 30px;
+    // border: 1px solid tomato;
+  }
 }

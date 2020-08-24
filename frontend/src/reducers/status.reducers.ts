@@ -10,6 +10,8 @@ const statusReducer = (state: Status = defaultStatus, action: StatusAction) => {
   switch (action.type) {
     case StatusActionTypes.UPDATE_STATUS:
       return action.payload;
+    case StatusActionTypes.DISMISS_ERROR:
+      return { ...state, errors: null };
     default:
       return state;
   }

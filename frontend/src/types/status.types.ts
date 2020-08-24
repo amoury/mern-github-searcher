@@ -1,5 +1,6 @@
 export enum StatusActionTypes {
   UPDATE_STATUS = 'UPDATE_STATUS',
+  DISMISS_ERROR = 'DISMISS_ERROR',
 }
 
 export interface Status {
@@ -13,4 +14,8 @@ export interface UpdateStatusAction {
   payload: Status;
 }
 
-export type StatusAction = UpdateStatusAction;
+export interface DismissErrorAction {
+  type: StatusActionTypes.DISMISS_ERROR;
+}
+
+export type StatusAction = UpdateStatusAction | DismissErrorAction;

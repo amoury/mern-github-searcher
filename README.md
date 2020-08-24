@@ -50,8 +50,6 @@ For the purposes of caching, the search query is stringified and used as the cac
 
 The cache is persisted in the local storage, so even if the app is refreshed, the cache records are maintained.
 
-[ _Add the image of the architecture here_ ]
-
 #### Backend
 
 Once the backend receives a request, it first checks for the results in its cache. This cache is maintained in **redis** database. If the results are not found in the cache, it then calls the `github api` for the search results.
@@ -59,8 +57,6 @@ Once the backend receives a request, it first checks for the results in its cach
 After the results are received, it first formats the results in the necessary format which is easier for the frontend to consume. It then caches this formatted data to the `redis store` and returns the result to the client.
 
 The results are cached in the `redis` store for upto 2 hours. Once again the key used for storing the cache is the stringified search query.
-
-[ _Add the image of the architecture here_ ]
 
 #### Error Handling
 
@@ -84,3 +80,9 @@ body -
 ```
 
 The data is validated in the backend and if any of the required fields are missing, it throws an error.
+
+#### Things to add / improve
+
+- Write Unit tests for both frontend and backend.
+- Create Swagger documentation for the endpoints.
+- Add a way to clear cache from the UI.

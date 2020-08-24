@@ -17,6 +17,12 @@ The app was bootstrapped using `create-react-app`.
 - Express
 - Redis (for caching)
 
+## DEMO
+
+Click on the image below to watch the setup and demo video -
+
+[![DEMO Video](https://img.youtube.com/vi/bGLvrmLQocE/0.jpg)](https://www.youtube.com/watch?v=bGLvrmLQocE)
+
 ## Get up and running...
 
 The whole app is dockerized to prevent dependency conflicts and can be easily started in any system with docker installed.
